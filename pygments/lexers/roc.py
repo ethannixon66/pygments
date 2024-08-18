@@ -11,7 +11,7 @@
 from pygments.lexer import RegexLexer, words, include, bygroups, using, this, \
     default
 from pygments.token import Comment, Keyword, Name, Number, Punctuation, \
-    String, Whitespace
+    String, Whitespace, Text
 
 __all__ = ['RocLexer']
 
@@ -41,15 +41,12 @@ class RocLexer(RegexLexer):
         '=', '\\', '->', '<-', ':=', ':', '&', '?'
     )
 
-    delimiters = (
-
-    )
     reservedWords = words((
         'as', 'crash', 'dbg', 'else', 'expect', 'expect-fx', 'if', 'import',
         'imports', 'is', 'then', 'when', 'app', 'exposes', 'exposing', 'generates',
         'implements', 'module', 'package', 'packages', 'platform', 'requires',
         'where', 'with', 'provides', 'interface', 'hosted', 'to', '_'
-    ), suffix=r'\b')
+    ), suffix=r'\b(?!:)')
 
     tokens = {
         'root': [
@@ -94,9 +91,6 @@ class RocLexer(RegexLexer):
 
             # Parens
             (r'[,()\[\]{}]', Punctuation),
-
-
-
         ],
 
         'doublequote': [
@@ -107,7 +101,6 @@ class RocLexer(RegexLexer):
             (r'[^"]', String),
             (r'"', String, '#pop'),
         ],
-
 
         'imports': [
             (r'\w+(\.\w+)*', Name.Class, '#pop'),
